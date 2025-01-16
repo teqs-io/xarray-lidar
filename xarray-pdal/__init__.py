@@ -2,6 +2,8 @@ import pdal
 import xarray as xr
 import numpy as np
 
+__package_name__ = "xarray-pdal"
+
 def read_las_to_xarray(las_file_path):
     """
     Reads a .las file using PDAL and converts it to an xarray Dataset.

@@ -2,10 +2,10 @@ from setuptools import setup, find_packages
 
 setup(
     name='xarray-pdal',
-    version='0.1.0',
-    author='Your Name',
-    author_email='your.email@example.com',
-    description='A brief description of your package',
+    version='0.0.0',
+    author='Taimur Khan',
+    author_email='taimur.khan@ufz.de',
+    description='A package for working with point cloud data in xarray using PDAL',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
     url='https://github.com/yourusername/xarray-pdal',
