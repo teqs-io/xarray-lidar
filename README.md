@@ -15,8 +15,6 @@
   </a>
 </p>
 
-<p align="center">A brief description of your package.</p>
-
 <p align="center">
   <strong>xarray-pdal</strong> is a Python package designed to provide functionality similar to <code>rioxarray</code> but for <strong>point cloud</strong> files. It leverages the power of <code>xarray</code> and <code>PDAL</code> to handle and process LiDAR data efficiently.
 </p>
