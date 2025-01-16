@@ -63,6 +63,14 @@ twine upload dist/*
 
 Make sure you have `twine` installed (`pip install twine`).
 
+## Versioning
+
+This project uses [Semantic Versioning](https://semver.org/). For more details, see the [CHANGELOG](./CHANGELOG.md).
+
+## Releasing
+
+Releases are handled automatically using [semantic-release](https://github.com/semantic-release/semantic-release). To create a new release, simply merge your changes into the `main` branch. The GitHub Action workflow will take care of the rest, including updating the version number, generating release notes, and creating a GitHub release.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
