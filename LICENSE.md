@@ -2,7 +2,7 @@
 
 Contributor: teqs.io
 
-Source Code: $address
+Source Code: [https://github.com/TEQS-io/xarray-pdal](https://github.com/TEQS-io/xarray-pdal)
 
 ## Purpose
 
