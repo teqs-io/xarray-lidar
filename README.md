@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <strong>xarray-lidar</strong> is a Python package designed to provide functionality similar to <code>rioxarray</code> but for <strong>point cloud</strong> files. It leverages the power of <code>xarray</code> and <code>PDAL</code> to handle and process LiDAR data efficiently.
+  <strong>xarray-lidar</strong> is a Python package designed to provide functionality similar to <code>rioxarray</code> but for <strong>point cloud</strong> files. It leverages the power of <code>xarray</code> and <code>PDAL</code> to handle and process LiDAR (or any point cloud) data efficiently.
 </p>
 
 ## Installation
