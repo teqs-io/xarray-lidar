@@ -2,7 +2,7 @@ import pdal
 import xarray as xr
 import numpy as np
 
-__package_name__ = "xarray-pdal"
+__package_name__ = "xarray-lidar"
 
 def read_las_to_xarray(las_file_path):
     """

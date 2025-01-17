@@ -1,14 +1,14 @@
-<h1 align="center">xarray-pdal</h1>
+<h1 align="center">xarray-lidar</h1>
 
 <p align="center">
-  <a href="https://pypi.org/project/xarray-pdal/">
-    <img src="https://img.shields.io/pypi/v/xarray-pdal.svg" alt="PyPI">
+  <a href="https://pypi.org/project/xarray-lidar/">
+    <img src="https://img.shields.io/pypi/v/xarray-lidar.svg" alt="PyPI">
   </a>
-  <a href="https://github.com/yourusername/xarray-pdal/actions">
-    <img src="https://github.com/yourusername/xarray-pdal/workflows/CI/badge.svg" alt="CI">
+  <a href="https://github.com/yourusername/xarray-lidar/actions">
+    <img src="https://github.com/yourusername/xarray-lidar/workflows/CI/badge.svg" alt="CI">
   </a>
-  <a href="https://codecov.io/gh/yourusername/xarray-pdal">
-    <img src="https://codecov.io/gh/yourusername/xarray-pdal/branch/main/graph/badge.svg" alt="codecov">
+  <a href="https://codecov.io/gh/yourusername/xarray-lidar">
+    <img src="https://codecov.io/gh/yourusername/xarray-lidar/branch/main/graph/badge.svg" alt="codecov">
   </a>
   <a href="https://opensource.org/licenses/MIT">
     <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <strong>xarray-pdal</strong> is a Python package designed to provide functionality similar to <code>rioxarray</code> but for <strong>point cloud</strong> files. It leverages the power of <code>xarray</code> and <code>PDAL</code> to handle and process LiDAR data efficiently.
+  <strong>xarray-lidar</strong> is a Python package designed to provide functionality similar to <code>rioxarray</code> but for <strong>point cloud</strong> files. It leverages the power of <code>xarray</code> and <code>PDAL</code> to handle and process LiDAR data efficiently.
 </p>
 
 ## Installation
@@ -24,7 +24,7 @@
 You can install the package using pip:
 
 ```sh
-pip install xarray-pdal
+pip install xarray-lidar
 ```
 
 ## Usage
@@ -32,7 +32,7 @@ pip install xarray-pdal
 Provide a brief example of how to use your package:
 
 ```python
-import xarray_pdal
+import xarray-lidar
 
 # Example usage
 ```
@@ -42,8 +42,8 @@ import xarray_pdal
 To install the package for development, clone the repository and use the following commands:
 
 ```sh
-git clone https://github.com/yourusername/xarray-pdal.git
-cd xarray-pdal
+git clone https://github.com/yourusername/xarray-lidar.git
+cd xarray-lidar
 pip install -e .
 ```
 
