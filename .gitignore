@@ -1,3 +1,5 @@
 .venv
 .DS_Store
-xarray-pdal/__pycache__
+__pycache__/
+sample_data/*.las
+sample_data/__MACOSX/

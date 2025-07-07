@@ -1,5 +1,6 @@
 import pytest
-from xarray_pdal import read_las_to_xarray
+import xarray as xr
+from xarray_lidar import read_las_to_xarray
 
 def test_read_las_to_xarray():
     # Provide a path to a sample .las file for testing

@@ -32,9 +32,9 @@ pip install xarray-lidar
 Provide a brief example of how to use your package:
 
 ```python
-import xarray-lidar
+import xarray_lidar as xl
 
-# Example usage
+dataset = xl.read_point_cloud("my_points.las")
 ```
 
 ## Development
