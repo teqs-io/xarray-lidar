@@ -1,17 +1,15 @@
 # Changelog
 
 ## [Unreleased]
+
+## [0.1.0] - 2024-07-01
 ### Added
-- Added new feature X
-- Added support for Y
+- `clip_polygon` for clipping points with a polygon geometry
+- `merge_point_clouds` for concatenating multiple datasets
+- `get_bounds` to quickly retrieve dataset bounds
 
 ### Changed
-- Improved performance of Z
-- Updated documentation for A
-
-### Fixed
-- Fixed bug in B
-- Resolved issue with C
+- Bumped package version to `0.1.0`
 
 ## [Previous Release]
 ### Added

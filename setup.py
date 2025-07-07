@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='xarray-lidar',
-    version='0.0.0',
+    version='0.1.0',
     author='Taimur Khan',
     author_email='taimur.khan@ufz.de',
     description='A package for working with point cloud data in xarray using PDAL',

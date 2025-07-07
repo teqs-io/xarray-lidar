@@ -44,6 +44,19 @@ subset = xl.clip_bbox(pc, 0, 0, 1000, 1000)
 
 # Convert to a simple raster DEM
 dem = xl.to_dem(subset, resolution=5)
+
+# Further utilities
+from shapely.geometry import Polygon
+
+# Clip using a polygon geometry
+poly = Polygon([(0, 0), (0, 1000), (1000, 1000), (1000, 0)])
+poly_subset = xl.clip_polygon(pc, poly)
+
+# Merge multiple datasets
+combined = xl.merge_point_clouds([pc, subset])
+
+# Dataset bounds
+minx, miny, maxx, maxy = xl.get_bounds(pc)
 ```
 ## Development
 

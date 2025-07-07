@@ -8,6 +8,10 @@ import xarray as xr
 
 from pyproj import CRS, Transformer
 try:
+    from shapely.geometry import Polygon, Point
+except ModuleNotFoundError:  # pragma: no cover - optional dependency
+    Polygon = Point = None
+try:
     import pdal
 except ModuleNotFoundError:  # pragma: no cover - optional dependency
     pdal = None
@@ -22,7 +26,21 @@ __package_name__ = "xarray_lidar"
 SUPPORTED_FORMATS = {".las", ".laz", ".ply"}
 
 
-__all__ = ["read_point_cloud", "read_las_to_xarray", "read_ply_to_xarray", "write_las", "write_ply", "set_crs", "get_crs", "to_crs", "clip_bbox", "to_dem"]
+__all__ = [
+    "read_point_cloud",
+    "read_las_to_xarray",
+    "read_ply_to_xarray",
+    "write_las",
+    "write_ply",
+    "set_crs",
+    "get_crs",
+    "to_crs",
+    "clip_bbox",
+    "clip_polygon",
+    "to_dem",
+    "merge_point_clouds",
+    "get_bounds",
+]
 def _load_with_pdal(file_path: str) -> xr.Dataset:
     """Internal helper to load LAS/LAZ with PDAL."""
     if pdal is None:
@@ -161,6 +179,39 @@ def clip_bbox(dataset: xr.Dataset, minx: float, miny: float, maxx: float, maxy: 
         & (dataset["Y"] <= maxy)
     )
     return dataset.where(mask, drop=True)
+
+def clip_polygon(dataset: xr.Dataset, polygon) -> xr.Dataset:
+    """Return points that fall within the given ``shapely`` polygon."""
+
+    if Polygon is None or Point is None:
+        raise ImportError("shapely is required for polygon clipping")
+
+    mask = xr.DataArray(
+        [polygon.covers(Point(x, y)) for x, y in zip(dataset["X"].values, dataset["Y"].values)],
+        dims="points",
+    )
+    return dataset.where(mask, drop=True)
+
+
+def get_bounds(dataset: xr.Dataset) -> tuple[float, float, float, float]:
+    """Return the dataset bounds as ``(minx, miny, maxx, maxy)``."""
+
+    x = dataset["X"].values
+    y = dataset["Y"].values
+    return float(x.min()), float(y.min()), float(x.max()), float(y.max())
+
+
+def merge_point_clouds(datasets: list[xr.Dataset]) -> xr.Dataset:
+    """Concatenate multiple point cloud datasets along the ``points`` dimension."""
+
+    if not datasets:
+        raise ValueError("No datasets provided")
+
+    vars0 = set(datasets[0].data_vars)
+    for ds in datasets[1:]:
+        if set(ds.data_vars) != vars0:
+            raise ValueError("All datasets must have the same variables")
+    return xr.concat(datasets, dim="points")
 
 # DEM generation ------------------------------------------------------------
 
