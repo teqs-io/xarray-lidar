@@ -6,6 +6,7 @@ import json
 import numpy as np
 import xarray as xr
 
+from pyproj import CRS, Transformer
 try:
     import pdal
 except ModuleNotFoundError:  # pragma: no cover - optional dependency
@@ -20,6 +21,8 @@ __package_name__ = "xarray_lidar"
 
 SUPPORTED_FORMATS = {".las", ".laz", ".ply"}
 
+
+__all__ = ["read_point_cloud", "read_las_to_xarray", "read_ply_to_xarray", "write_las", "write_ply", "set_crs", "get_crs", "to_crs", "clip_bbox", "to_dem"]
 def _load_with_pdal(file_path: str) -> xr.Dataset:
     """Internal helper to load LAS/LAZ with PDAL."""
     if pdal is None:
@@ -115,3 +118,70 @@ def write_ply(dataset: xr.Dataset, output_path: str) -> None:
     element = PlyElement.describe(arr, "vertex")
     PlyData([element]).write(output_path)
 
+
+# CRS helpers ---------------------------------------------------------------
+
+def set_crs(dataset: xr.Dataset, crs: str) -> xr.Dataset:
+    """Attach a coordinate reference system to the dataset."""
+    dataset = dataset.copy()
+    dataset.attrs["crs"] = crs
+    return dataset
+
+def get_crs(dataset: xr.Dataset) -> str | None:
+    """Return the dataset CRS if present."""
+    return dataset.attrs.get("crs")
+
+
+def to_crs(dataset: xr.Dataset, crs: str) -> xr.Dataset:
+    """Reproject point coordinates to a new CRS."""
+    src = CRS.from_user_input(get_crs(dataset))
+    dst = CRS.from_user_input(crs)
+    if src == dst:
+        return dataset.copy()
+    transformer = Transformer.from_crs(src, dst, always_xy=True)
+    x, y, *rest = transformer.transform(
+        dataset["X"].values, dataset["Y"].values, dataset.get("Z", None)
+    )
+    data = dataset.copy()
+    data["X"] = ("points", np.asarray(x))
+    data["Y"] = ("points", np.asarray(y))
+    if "Z" in dataset:
+        data["Z"] = ("points", np.asarray(rest[0]))
+    data.attrs["crs"] = crs
+    return data
+
+# Spatial subset ------------------------------------------------------------
+
+def clip_bbox(dataset: xr.Dataset, minx: float, miny: float, maxx: float, maxy: float) -> xr.Dataset:
+    """Return points falling within the bounding box."""
+    mask = (
+        (dataset["X"] >= minx)
+        & (dataset["X"] <= maxx)
+        & (dataset["Y"] >= miny)
+        & (dataset["Y"] <= maxy)
+    )
+    return dataset.where(mask, drop=True)
+
+# DEM generation ------------------------------------------------------------
+
+def to_dem(dataset: xr.Dataset, resolution: float = 1.0) -> xr.DataArray:
+    """Generate a simple Digital Elevation Model using mean Z values."""
+    x = dataset["X"].values
+    y = dataset["Y"].values
+    z = dataset["Z"].values
+    minx, maxx = x.min(), x.max()
+    miny, maxy = y.min(), y.max()
+    xi = np.arange(minx, maxx + resolution, resolution)
+    yi = np.arange(miny, maxy + resolution, resolution)
+    dem = np.full((len(yi), len(xi)), np.nan)
+    for i in range(len(x)):
+        ix = int((x[i] - minx) / resolution)
+        iy = int((y[i] - miny) / resolution)
+        if 0 <= ix < len(xi) and 0 <= iy < len(yi):
+            if np.isnan(dem[iy, ix]):
+                dem[iy, ix] = z[i]
+            else:
+                dem[iy, ix] = (dem[iy, ix] + z[i]) / 2.0
+    da = xr.DataArray(dem, coords={"y": yi, "x": xi}, dims=("y", "x"))
+    da.attrs.update(dataset.attrs)
+    return da
