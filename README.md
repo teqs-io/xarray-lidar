@@ -29,14 +29,22 @@ pip install xarray-lidar
 
 ## Usage
 
-Provide a brief example of how to use your package:
-
 ```python
-import xarray-lidar
+import xarray_lidar as xl
 
-# Example usage
+# Load a LAS file
+pc = xl.read_point_cloud("my_points.las")
+
+# Attach CRS and reproject
+pc = xl.set_crs(pc, "EPSG:4326")
+pc = xl.to_crs(pc, "EPSG:3857")
+
+# Clip to an area of interest
+subset = xl.clip_bbox(pc, 0, 0, 1000, 1000)
+
+# Convert to a simple raster DEM
+dem = xl.to_dem(subset, resolution=5)
 ```
-
 ## Development
 
 To install the package for development, clone the repository and use the following commands:

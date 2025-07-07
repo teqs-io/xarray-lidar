@@ -1,6 +1,8 @@
 import pytest
-from xarray_pdal import read_las_to_xarray
+import xarray as xr
+from xarray_lidar import read_las_to_xarray, pdal
 
+@pytest.mark.skipif(pdal is None, reason="pdal not installed")
 def test_read_las_to_xarray():
     # Provide a path to a sample .las file for testing
     sample_las_file = "../sample_data/0368.las"
