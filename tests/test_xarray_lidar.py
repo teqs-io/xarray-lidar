@@ -1,6 +1,7 @@
 import numpy as np
 import xarray as xr
 import pytest
+Polygon = pytest.importorskip("shapely.geometry").Polygon
 
 import xarray_lidar as xl
 
@@ -45,3 +46,21 @@ def test_read_las_to_xarray():
     ds = xl.read_las_to_xarray(sample_las_file)
     assert isinstance(ds, xr.Dataset)
     assert "X" in ds
+
+
+def test_clip_polygon():
+    ds = xr.Dataset({
+        "X": ("points", [0, 5, 10]),
+        "Y": ("points", [0, 5, 10]),
+    })
+    poly = Polygon([(0, 0), (0, 6), (6, 6), (6, 0)])
+    clipped = xl.clip_polygon(ds, poly)
+    assert len(clipped.points) == 2
+
+
+def test_merge_point_clouds_and_bounds():
+    ds1 = xr.Dataset({"X": ("points", [0]), "Y": ("points", [0])})
+    ds2 = xr.Dataset({"X": ("points", [2]), "Y": ("points", [3])})
+    merged = xl.merge_point_clouds([ds1, ds2])
+    assert len(merged.points) == 2
+    assert xl.get_bounds(merged) == (0.0, 0.0, 2.0, 3.0)
